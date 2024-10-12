@@ -2,16 +2,24 @@
     width: 800px;
     height: 800px;
     margin: 0% auto;
-    background-color: rgb(0, 0, 0);
+    background-color: rgb(182, 223, 237);
     display: grid;
     grid-template-columns:repeat(10,1fr);
     grid-template-rows: repeat(10,1fr);
     gap :3px;
 }
-/* .soil{
-background-color: rgb(42, 165, 108);
-
-grid-row: 2/3;
-grid-column: 2/3;
-display: grid;
-} */
+#axe{
+    width : 50px;
+    height: 50px;
+    margin-right: auto;
+}
+#pickaxe{
+    width : 50px;
+    height: 50px;
+    margin-right: auto;
+}
+#shovel{
+    width : 50px;
+    height: 50px;
+    margin-right: auto;
+}
