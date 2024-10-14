@@ -23,3 +23,9 @@
     height: 50px;
     margin-right: auto;
 }
+.button{
+    background-color: bisque;
+    color: black;
+    border-radius: 25px;
+
+}
