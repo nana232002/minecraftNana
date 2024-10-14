@@ -2,6 +2,7 @@
 const soilHtml =document.querySelector(".container");
 let soilCounter = 0;
 let soilbutton = document.createElement("button");
+soilbutton.className ="button";
 soilHtml.appendChild(soilbutton);
 soilbutton.textContent = `soil = ${soilCounter}`;
 const pickaxe =document.getElementById("pickaxe");
@@ -10,50 +11,26 @@ let stoneCounter = 0;
 let stonebutton = document.createElement("button");
 soilHtml.appendChild(stonebutton);
 stonebutton.textContent = `stone = ${stoneCounter}`;
+stonebutton.className ="button";
 const shovel =document.getElementById("shovel");
 for(let i = 1; i < 4; i++) {
     for(let x = 1; x < 11; x++) {
         //soil
-        const imgSoil = document.createElement("img");
-        imgSoil.src = "soil1.png";
-        imgSoil.className = "soilClass";
-        imgSoil.style.width = "100%";
-        imgSoil.style.height = "100%";
-        imgSoil.style.gridColumn = `${x} / ${x + 1}`;
-        imgSoil.style.gridRow = `${i + 4} / ${i + 5}`; // Start from row 5
-        soilHtml.appendChild(imgSoil);
+        createSoil(x,i+4);
         //stone
-        const imgStone = document.createElement("img");
-        imgStone.src = "ssss.jpg";
-        imgStone.className = "stoneClass";
-        imgStone.style.width = "100%";
-        imgStone.style.height = "100%";
-        imgStone.style.gridColumn = `${x} / ${x + 1}`;
-        imgStone.style.gridRow = `${i + 7} / ${i + 8}`; // Start from row 8
-        soilHtml.appendChild(imgStone);
-        
+        createStone(x,i+7);
     }
 }
-
 let grassCounter = 0;
 let grassbutton = document.createElement("button");
+grassbutton.className ="button";
 soilHtml.appendChild(grassbutton);
 grassbutton.textContent = `grass = ${grassCounter}`;
-
-// const axe =document.getElementById("axe");
-// document.addEventListener("DOMContentLoaded",()=>{
-//     soilHtml.addEventListener("click",(event)=>{
-//         console.log(event.target);
-        
-//         });
-// });
 for(let x = 1; x < 11; x++) {
     //grass
     createGrass(x,4);
 }
-
 function createGrass (x ,y){
-    const axe =document.getElementById("axe");
     const imgGrass = document.createElement("img");
     imgGrass.src = "grass1.png";
     imgGrass.className = "grassClass";
@@ -63,10 +40,29 @@ function createGrass (x ,y){
     imgGrass.style.gridRow = `${y} / ${y + 1}`; 
     soilHtml.appendChild(imgGrass);
 }
+function  createStone(x,y){
+    const imgStone = document.createElement("img");
+        imgStone.src = "ssss.jpg";
+        imgStone.className = "stoneClass";
+        imgStone.style.width = "100%";
+        imgStone.style.height = "100%";
+        imgStone.style.gridColumn = `${x} / ${x + 1}`;
+        imgStone.style.gridRow = `${y} / ${y+1}`; // Start from row 8
+        soilHtml.appendChild(imgStone);
+}
+function  createSoil(x,y){
+    const imgSoil = document.createElement("img");
+        imgSoil.src = "soil1.png";
+        imgSoil.className = "soilClass";
+        imgSoil.style.width = "100%";
+        imgSoil.style.height = "100%";
+        imgSoil.style.gridColumn = `${x} / ${x + 1}`;
+        imgSoil.style.gridRow = `${y} / ${y+1}`; // Start from row 5
+        soilHtml.appendChild(imgSoil);
 
+}
 let selectedItem;
 let selectedTool;
-
 pickaxe.addEventListener("click", () => {
     selectedTool="pickaxe";
     selectedItem =undefined;
@@ -94,23 +90,15 @@ stonebutton.addEventListener("click", () => {
     selectedTool =undefined;
 });
 
-
-
-
 soilHtml.addEventListener("click", (event) => {
-    handleClick(event.target);
-    console.log(grassCounter);
-    console.log(soilCounter);
-    console.log(stoneCounter);
-    
-    
-    
-    console.log(selectedTool);
-    console.log(event.target);
+    const container = event.currentTarget;
+    const containerRect = container.getBoundingClientRect();
+    const x = Math.floor((event.clientX - containerRect.left) / (containerRect.width / 10)) + 1; // Assuming 10 columns
+    const y = Math.floor((event.clientY - containerRect.top) / (containerRect.height / 10)) + 1; // Assuming 10 rows
+    handleClick(event.target,x,y);
+  
 });
-
-
-function handleClick(clickedTile) {
+function handleClick(clickedTile,x,y) {
 if (selectedTool) {
     if (selectedTool === "pickaxe") {
         if(clickedTile.className ==="soilClass"){
@@ -142,41 +130,31 @@ if (selectedTool) {
 else if(selectedItem){
     console.log(selectedItem);
     
-    if (selectedItem === "soilButton") {
-        if(!(clickedTile.className ==="soilClass" || clickedTile.className ==="grassClass" || clickedTile.className ==="stoneClass")){
-            // clickedTile.remove();
-            // soilCounter ++;
-            // soilbutton.textContent = `soil = ${soilCounter}`;
-            // console.log("ok");
+    if (selectedItem === "soilButton" & soilCounter>0) {
+        if(!(clickedTile.className ==="soilClass" || clickedTile.className ==="grassClass" || clickedTile.className ==="stoneClass"|| clickedTile.className ==="button" )){
+            createSoil(x,y);
+            soilCounter --;
+            soilbutton.textContent = `soil = ${soilCounter}`;
+
             
             
         }
     }
-    if (selectedItem === "grassButton") {
-        if(!(clickedTile.className ==="soilClass" || clickedTile.className ==="grassClass" || clickedTile.className ==="stoneClass")){
-            // createGrass(clickedTile.gridColumn ,clickedTile.gridRow);
-            const imgGrass = document.createElement("img");
-            imgGrass.src = "grass1.png";
-            imgGrass.className = "grassClass";
-            imgGrass.style.width = "100%";
-            imgGrass.style.height = "100%";
-            clickedTile.appendChild(imgGrass);
-            // const x=clickedTile.gridColumn;
-            // const y=clickedTile.gridRow;
-            // console.log(x);
-            // console.log(y);
+    else if (selectedItem === "grassButton" & grassCounter>0 ) {
+        if(!(clickedTile.className ==="soilClass" || clickedTile.className ==="grassClass" || clickedTile.className ==="stoneClass" || clickedTile.className ==="button" )){
+            createGrass(x,y);
+            grassCounter --;
+            grassbutton.textContent = `grass = ${grassCounter}`;
             
-            
-            // imgGrass.style.gridColumn = `${x} / ${x + 1}`;
-            // imgGrass.style.gridRow = `${y} / ${y + 1}`; 
-            soilHtml.appendChild(imgGrass);
-            console.log("ok");
-            
+        }
+    }
+    else if (selectedItem === "stoneButton" & stoneCounter>0) {
+        if(!(clickedTile.className ==="soilClass" || clickedTile.className ==="grassClass" || clickedTile.className ==="stoneClass" || clickedTile.className ==="button" )){
+            createStone(x,y);
+            stoneCounter --;
+            stonebutton.textContent = `stone = ${stoneCounter}`;
             
         }
     }
 }
-    
-
-
 }

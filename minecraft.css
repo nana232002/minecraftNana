@@ -6,7 +6,7 @@
     display: grid;
     grid-template-columns:repeat(10,1fr);
     grid-template-rows: repeat(10,1fr);
-    gap :3px;
+    /* gap :3px; */
 }
 #axe{
     width : 50px;
